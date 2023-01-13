@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { styles } from "../../styles";
 import { Input, DatePickerProps } from "antd";
-import { DatePicker, Select, Modal } from "antd";
+import { DatePicker, Select, Modal, Spin } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -25,6 +25,7 @@ const EditTodo = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [todo, setTodo] = useState<sendData>();
   const [event, setEvent] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   // modal related logic
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -113,12 +114,16 @@ const EditTodo = () => {
     };
     const route_param = param.id;
     try {
+      setLoading(true);
       const res = axios.put(
         "https://enhancedtodoapp-production.up.railway.app/todos/" +
           route_param,
         values
       );
-      return navigate("/");
+      res.then((response) => {
+        console.log(response);
+        return navigate("/");
+      });
     } catch (e: any) {
       console.log(e);
       alert(e.message());
@@ -127,8 +132,18 @@ const EditTodo = () => {
 
   const { TextArea } = Input;
 
+  const spinStyle = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    height: "100px",
+    width: "100px",
+  };
+
   return (
     <div style={{ width: "60vw", margin: "auto" }}>
+      {loading ? <Spin size="large" style={spinStyle} /> : null}
       <Modal
         title="Confirm save"
         open={isModalOpen}
@@ -226,12 +241,7 @@ const EditTodo = () => {
                 />
               </div>
               <button style={styles.buttonStyleForAddTodo}>submit</button>
-              <button
-                style={styles.buttonStyleForAddTodoBack}
-                onClick={() => navigate("/")}
-              >
-                back
-              </button>
+              <button style={styles.buttonStyleForAddTodoBack}>back</button>
             </form>
           </div>
         )}

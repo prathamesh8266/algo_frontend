@@ -5,6 +5,7 @@ import { DatePicker, Select } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Spin } from "antd";
 
 const onChange: DatePickerProps["onChange"] = (date, dateString) => {};
 
@@ -21,6 +22,7 @@ const AddTodo = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (value: string) => {
     setStatus(value);
@@ -74,11 +76,15 @@ const AddTodo = () => {
       return;
     }
     try {
+      setLoading(true);
       const res = axios.post(
         "https://enhancedtodoapp-production.up.railway.app/todos",
         values
       );
-      return navigate("/");
+      res.then((response) => {
+        console.log(response);
+        return navigate("/");
+      });
     } catch (e: any) {
       console.log(e);
       alert(e.message());
@@ -93,94 +99,103 @@ const AddTodo = () => {
     },
   };
 
+  const spinStyle = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    height: "100px",
+    width: "100px",
+  };
+
   const { TextArea } = Input;
   return (
     <div style={divStyle}>
-      <h1 style={{ textAlign: "center", marginTop: "50px" }}>Add a new todo</h1>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "100px",
-        }}
-      >
-        <div>
-          <form
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-              }
+      {loading ? <Spin size="large" style={spinStyle} /> : null}
+      <div>
+        <div style={{ opacity: loading ? "0.5" : "1" }}>
+          <h1 style={{ textAlign: "center", marginTop: "50px" }}>
+            Add a new todo
+          </h1>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "100px",
             }}
-            onSubmit={dataSubmitHandler}
           >
-            <Input placeholder="Title" maxLength={100} />
-            <TextArea
-              style={{ marginTop: "30px" }}
-              rows={4}
-              placeholder="description"
-              maxLength={1000}
-            />
-            <DatePicker
-              style={{ marginTop: "30px" }}
-              onChange={onChange}
-              placeholder="Due date"
-            />
-            <br></br>
-            <Select
-              defaultValue="OPEN"
-              style={{ width: 160, marginTop: "30px" }}
-              onChange={handleChange}
-              options={[
-                {
-                  value: "OPEN",
-                  label: "OPEN",
-                },
-                {
-                  value: "WORKING",
-                  label: "WORKING",
-                },
-                {
-                  value: "DONE",
-                  label: "DONE",
-                },
-                {
-                  value: "OVERDUE",
-                  label: "OVERDUE",
-                },
-              ]}
-            />
-            <div style={styles.tagDivStyle}>
-              <ul style={styles.tagUlStyle}>
-                {tags.map((tag, index) => {
-                  return (
-                    <li style={styles.tagLiStyle} key={index}>
-                      {tag}
-                      <span
-                        style={{ paddingLeft: "10px", cursor: "pointer" }}
-                        onClick={() => {
-                          removeTag(index);
-                        }}
-                      >
-                        <CloseOutlined />
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-              <input
-                style={styles.tagInput}
-                placeholder="add a tag.."
-                onKeyUp={addTags}
-              />
-            </div>
-            <button style={styles.buttonStyleForAddTodo}>submit</button>
-            <button
-              style={styles.buttonStyleForAddTodoBack}
-              onClick={() => navigate("/")}
+            <form
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
+              onSubmit={dataSubmitHandler}
             >
-              back
-            </button>
-          </form>
+              <Input placeholder="Title" maxLength={100} />
+              <TextArea
+                style={{ marginTop: "30px" }}
+                rows={4}
+                placeholder="description"
+                maxLength={1000}
+              />
+              <DatePicker
+                style={{ marginTop: "30px" }}
+                onChange={onChange}
+                placeholder="Due date"
+              />
+              <br></br>
+              <Select
+                defaultValue="OPEN"
+                style={{ width: 160, marginTop: "30px" }}
+                onChange={handleChange}
+                options={[
+                  {
+                    value: "OPEN",
+                    label: "OPEN",
+                  },
+                  {
+                    value: "WORKING",
+                    label: "WORKING",
+                  },
+                  {
+                    value: "DONE",
+                    label: "DONE",
+                  },
+                  {
+                    value: "OVERDUE",
+                    label: "OVERDUE",
+                  },
+                ]}
+              />
+              <div style={styles.tagDivStyle}>
+                <ul style={styles.tagUlStyle}>
+                  {tags.map((tag, index) => {
+                    return (
+                      <li style={styles.tagLiStyle} key={index}>
+                        {tag}
+                        <span
+                          style={{ paddingLeft: "10px", cursor: "pointer" }}
+                          onClick={() => {
+                            removeTag(index);
+                          }}
+                        >
+                          <CloseOutlined />
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <input
+                  style={styles.tagInput}
+                  placeholder="add a tag.."
+                  onKeyUp={addTags}
+                />
+              </div>
+              <button style={styles.buttonStyleForAddTodo}>submit</button>
+              <button style={styles.buttonStyleForAddTodoBack}>back</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
