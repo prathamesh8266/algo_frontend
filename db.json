@@ -1,0 +1,79 @@
+{
+  "todos": [
+    {
+      "createdDate": "2023-01-01",
+      "title": "Laundry",
+      "description": "do the laundry",
+      "dueDate": "2022-12-22",
+      "tags": [
+        "laundry",
+        "work"
+      ],
+      "status": "OPEN",
+      "id": 2
+    },
+    {
+      "createdDate": "2023-01-01",
+      "title": "Coding",
+      "description": "complete coding",
+      "dueDate": "2023-01-01",
+      "tags": [
+        "code",
+        "work"
+      ],
+      "status": "OPEN",
+      "id": 4
+    },
+    {
+      "createdDate": "2023-01-01",
+      "title": "Study",
+      "description": "read for 1 hour at night",
+      "dueDate": "2023-01-18",
+      "tags": [
+        "read",
+        "book",
+        "ok"
+      ],
+      "status": "OPEN",
+      "id": 5
+    },
+    {
+      "createdDate": "2023-01-01",
+      "title": "Cloth wash",
+      "description": "wash cloth",
+      "dueDate": "2023-01-05",
+      "tags": [
+        "cloth",
+        "wash"
+      ],
+      "status": "DONE",
+      "id": 6
+    },
+    {
+      "createdDate": "2023-01-01",
+      "title": "Workout",
+      "description": "go to the gym",
+      "dueDate": "2022-11-03",
+      "tags": [
+        "workout",
+        "gym"
+      ],
+      "status": "WORKING",
+      "id": 7
+    },
+    {
+      "createdDate": "2023-01-01",
+      "title": "sdafaws",
+      "description": "asfasfas",
+      "dueDate": "2023-01-04",
+      "tags": [
+        "asawsd",
+        "asfdas",
+        "asfdas",
+        "fawsf"
+      ],
+      "status": "WORKING",
+      "id": 8
+    }
+  ]
+}
